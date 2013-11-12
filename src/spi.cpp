@@ -90,10 +90,9 @@ int Spi::close() {
 int Spi::shift(uint8_t *data, int length) {
   struct spi_ioc_transfer spi[length];
  
-  for (int i = 0 ; i < length ; i += 8) {
-    int n = min(8, length-1);
-    spi[i].tx_buf = (uint64_t*)(data + i); // transmit from "data"
-    spi[i].rx_buf = (uint64_t*)(data + i) ; // receive into "data"
+  for (int i = 0 ; i < length ; ++i) {
+    spi[i].tx_buf = (uint64_t)(data + i); // transmit from "data"
+    spi[i].rx_buf = (uint64_t)(data + i) ; // receive into "data"
     spi[i].len = sizeof(*(data + i)) ;
     spi[i].delay_usecs = 0 ;
     spi[i].speed_hz = this->speed ;
