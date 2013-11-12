@@ -1,7 +1,8 @@
 /***********************************************************************
- * This header file contains the mcp3008Spi class definition.
- * Its main purpose is to communicate with the MCP3008 chip using
- * the userspace spidev facility.
+ * This header file defines a general-purpose SPI interface class.
+ * Its main purpose is to communicate with the devices on the SPI interface 
+ * using the userspace spidev facility.
+ *
  * The class contains four variables:
  * mode        -> defines the SPI mode used. In our case it is SPI_MODE_0.
  * bitsPerWord -> defines the bit width of the data transmitted.
@@ -20,39 +21,39 @@
  * The spiWriteRead() function sends the data "data" of length "length"
  * to the spidevice and at the same time receives data of the same length.
  * Resulting data is stored in the "data" variable after the function call.
+ * (Based on https://github.com/halherta/RaspberryPi-mcp3008Spi)
  * ****************************************************************************/
-#ifndef MCP3008SPI_H
-    #define MCP3008SPI_H
+#ifndef SPI_H
+#define SPI_H
      
-#include <unistd.h>
-#include <stdint.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <linux/spi/spidev.h>
-#include <stdio.h>
-#include <errno.h>
-#include <stdlib.h>
 #include <string>
-#include <iostream>
+
+using namespace std;
+
+enum SpiStatus { CLOSED, OPEN, ERROR };
  
- 
-class mcp3008Spi{
+class Spi {
  
 public:
-    mcp3008Spi();
-    mcp3008Spi(std::string devspi, unsigned char spiMode, unsigned int spiSpeed, unsigned char spibitsPerWord);
-    ~mcp3008Spi();
-    int spiWriteRead( unsigned char *data, int length);
+    Spi(std::string dev, unsigned char mode, unsigned int speed, unsigned char bits);
+    Spi(int dev);
+    Spi();
+    ~Spi();
+
+    int open();
+    int close();
+    int shift(unsigned char *data, int length);
      
 private:
+    std::string dev;
     unsigned char mode;
-    unsigned char bitsPerWord;
     unsigned int speed;
+    unsigned char bitsPerWord;
+
+    SpiStatus status;
     int spifd;
      
-    int spiOpen(std::string devspi);
-    int spiClose();
-     
+    void init(std::string dev, unsigned char mode, unsigned int speed, unsigned char bits);
 };
  
 #endif
