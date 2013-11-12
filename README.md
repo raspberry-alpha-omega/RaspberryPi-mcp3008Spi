@@ -1,17 +1,9 @@
-halherta-RaspberryPi-mcp3008Spi
-===========================================================================================================
-Author: Hussam Al-Hertani
+Drake - an SPI API in C for the Raspberry Pi 
 
-Description: The mcp3008Spi class enables the Raspberry Pi to communicate with the MCP3008 SPI ADC using spidev. The class can be easily modified to enable the Raspberry Pi to communicate with other SPI devices.
+Installation
+------------
 
-============================================================================================================
-For more information please visit : 
-http://hertaville.com/2013/07/24/interfacing-an-spi-adc-mcp3008-chip-to-the-raspberry-pi-using-c/
+After cloning this repo, you should be able to just type "make" in the cloned directory. This will build the spi code and an example 
+"test" which will send some values to SPI CS1. To run the example, type "./test".
 
-========================================================================================
-To build example binary natively on the Raspberry Pi:
-
-g++ -fpermissive -Wall mcp3008Spi.cpp mcp3008SpiTest.cpp -o outBin
-
-
-Make sure that the mcp3008Spi.h header file is in the work directory.
+( Original code based on a C++ example at https://github.com/halherta/RaspberryPi-mcp3008Spi - Thanks to Hussam Al-Hertani )
